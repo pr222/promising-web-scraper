@@ -1,0 +1,41 @@
+{
+  "name": "exercise-promising-web-scraper",
+  "version": "1.0.0",
+  "description": "1DV026 - Exercise Module A - Promising Web Scarper",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "lint": "npx eslint ./src || exit 0",
+    "lint:fix": "npx eslint ./src --fix || exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.lnu.se:1dv026/content/exercises/exercise-promising-web-scraper.git"
+  },
+  "contributors": [
+    "Johan Leitet <johan.leitet@lnu.se>",
+    "Mats Loock <mats.loock@lnu.se>",
+    "// TODO: YOUR NAME <YOUR EMAIL>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "jsdom": "^16.4.0",
+    "node-fetch": "^2.6.1",
+    "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "@lnu/eslint-config": "^1.1.2",
+    "eslint": "^7.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.8",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.1.0"
+  },
+  "eslintConfig": {
+    "extends": "@lnu"
+  }
+}
