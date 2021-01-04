@@ -8,6 +8,7 @@
  */
 import validator from 'validator'
 import fse from 'fs-extra'
+import { Scraper } from './scraper.js'
 
 /**
  * Encapsulates a Node application.
@@ -63,7 +64,36 @@ export class Application {
    * Begins running the application.
    */
   async run () {
-    // Not developed yet.
+    // First, start reading the previous links from file.
+    const previousLinks = this._readLinksFromFile()
+
+    // Scrape for the new links...
+    const scraper = new Scraper()
+    const scrapedLinks = this._urls.map(url => scraper.findLinksFromPage(url))
+
+    // And wait for all links to be ready.
+    const links = await Promise.all([previousLinks, ...scrapedLinks])
+
+    // Make a new Set to remove duplicates and flatten.
+    const linksSet = new Set([...links.flat()])
+
+    // Sort links in array and write array of links to the file.
+    await this._writeLinksOnFile([...linksSet].sort())
+  }
+
+  /**
+   * Read a JSON file to get the links written on it.
+   *
+   * @returns {string[]} - Array of links from a file.
+   * @memberof Application
+   */
+  async _readLinksFromFile () {
+    try {
+      const filedLinks = fse.readJson(this.dataSource)
+      return filedLinks
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   /**
@@ -72,10 +102,9 @@ export class Application {
    * @param {string[]} links - Array of links to write into file.
    * @memberof Application
    */
-  async _writeLinks (links) {
+  async _writeLinksOnFile (links) {
     try {
-      await fse.writeJSON(this.dataSource, links, { spaces: '\t' })
-      console.log('Succeeded writing down links.')
+      fse.writeJSON(this.dataSource, links, { spaces: '\t' })
     } catch (err) {
       console.error(err)
     }
